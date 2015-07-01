@@ -1,18 +1,73 @@
-// Базис API
-// Помогает IDE найти функции.
+/**
+ * BaziScript(BS) API
+ * Базис API
+ * Bazis Platform API
+ * Standart Bazis Library (STBL)
+ * Помогает IDE найти функции.
+ * В WebStorm/PHPStorm для упрощения работы отключите все другие JavaScript библиотеки
+ *
+ * @author Alexey Vishnyakov
+ */
 
-var system = {
-    /**
-     *
-     * @param file
-     */
-    require: function (file) {},
-    include: function (file) {},
-    log: function (text) {},
-    apiVersion: 90,
-    fileExists: function (file) {}
-};
 
+/**
+ * Показывает модальное окно с текстом
+ *
+ * @param {string} msg  Текст
+ */
+var alert = function (msg) {};
+
+/**
+ * Показвает модальное окно с текстом и кнопками Да-Нет
+ *
+ * @param {string}      msg Текст
+ * @return {boolean}        Ответ пользователя
+ */
+var confirm = function (msg) {return true;};
+
+/**
+ * Пространство имен для функций платформы Bazis
+ *
+ * @namespace
+ */
+var system = {};
+/**
+ * Включение другого BS скрипта
+ *
+ * @param {string} file
+ */
+system.require = function (file) {};
+
+/**
+ * Аналогично require. Разница не известна
+ *
+ * @param {string} file
+ */
+system.include = function (file) {};
+/**
+ * Вывод сообщения в консоль
+ * @param {*} text - Данные для вывода
+ */
+system.log = function (text) {};
+
+/**
+ * Версия BS API
+ */
+system.apiVersion = 90;
+
+/**
+ * Проверяет существование файла
+ *
+ * @param {string} file
+ * @return {boolean}
+ */
+system.fileExists = function (file) {return true;};
+
+/**
+ * Параметрический блок: блок на котором было вызванно редактирование. При первичном запуске скрипта неопределен.
+ *
+ * @type {object}
+ */
 var ParametricBlock = {
     Name: "",                   // Наименование.
     ArtPos: "",                 // Артикул.
@@ -38,21 +93,49 @@ var ParametricBlock = {
     Objects: []
 };
 
+/**
+ * Текущий скрипт
+ *
+ * @namespace
+ */
 var Action = {
+    Continue: function () {},
     Finish: function () {},
     Cancel: function () {},
+    Hint: "",
     Properties: {
         Save: function () {},
         Load: function () {}
     }
 };
 
+/**
+ * Активный материал
+ *
+ * @type {{Make: Function}}
+ */
 var ActiveMaterial = {
-    Make: function (name, Thickness) {}
+    /**
+     * Создать материал по наименованию и толщине или ширине
+     *
+     * @param name - Имя
+     * @param Thickness - Толщина
+     * @param width - Ширина
+     */
+    Make: function (name, Thickness, width) {}
 };
 
-var Model;
+/**
+ * Текущая модель
+ *
+ * @namespace
+ */
+var Model = {};
 
+/**
+ * Виды анимации
+ * @type {{None: number, Custom: number, DoorLeft: number, DoorRight: number, DoorFlap: number, DoorLift: number, SDoorLeft: number, SdoorRight: number, Box: number, Support: number, Handle: number, Facade: number}}
+ */
 var AnimationType = {
     None: 0,
     Custom: 1,
@@ -68,18 +151,77 @@ var AnimationType = {
     Facade: 11
 };
 
-var OpenFurniture = function () {};
+/**
+ * Фурнитура
+ * @typedef Furniture
+ * @type {object}
+ * @property {function} Mount - Монтировать к двум панелям
+ * @property {function} Mount1 - Монтировать к одной панели
+ */
+var Furniture;
+/**
+ * Открыть фурнитуру
+ *
+ * @function OpenFurniture
+ * @param {string}  file    Имя файла
+ * @returns {Furniture}
+ */
+var OpenFurniture = function (file) {};
 
-var AddHorizPanel = function (xl, zl, x2, z2, y) {};
+/**
+ * Материал
+ * @typedef Material
+ * @property {string} Name - Имя материала
+ * @property {number} Thickness - Толщина материала
+ * @property {Function} SetActive - Сделать материал активным
+ */
+var Material;
 
+/**
+ * Материал кромки
+ * @typedef ButtMaterial
+ */
+var ButtMaterial;
+
+/**
+ * Создать горизонтальную панель
+ *
+ * @constructs Panel
+ * {number} @param x1
+ * {number} @param z1
+ * {number} @param x2
+ * {number} @param z2
+ * {number} @param y
+ */
+var AddHorizPanel = function (x1, z1, x2, z2, y) {};
+
+/**
+ * Создать вертикальную панель
+ *
+ * @constructs Panel
+ * {number} @param z1
+ * {number} @param y1
+ * {number} @param z2
+ * {number} @param y2
+ * {number} @param x
+ */
 var AddVertPanel = function (z1, y1, z2, y2, x) {};
 
+/**
+ * Создать фронтальную панель
+ *
+ * @constructs Panel
+ * @param {number} x1
+ * @param {number} y1
+ * @param {number} x2
+ * @param {number} y2
+ * @param {number} z
+ */
 var AddFrontPanel = function (x1, y1, x2, y2, z) {};
 
 /**
- *
+ * @constructs Block
  * @param name
- * @constructor
  */
 var AddBlock = function (name) {};
 
@@ -90,44 +232,107 @@ var AddBlock = function (name) {};
  */
 var Block = {};
 
+/**
+ *
+ * @param name
+ * @constructs Block
+ */
 var BeginParametricBlock = function (name) {};
 
 var EndParametricBlock = function () {};
 
 var DeleteNewObjects = function () {};
 var DeleteObject = function (object) {};
-var alert = function (message) {};
 
 var SetCamera = function () {};
 
+/**
+ *
+ * @type {{AddButt: Function}}
+ */
 var Panel = {
-    AddButt: function (material, elem) {}
+    AddButt: function (material, elem) {},
+    Thickness: 0,
+    Position: {},
+    GabMin: {},
+    GabMax: {},
+    GMin: {},
+    GMax: {},
+    GSize: {},
+    Build: function () {},
+    /**
+     * @param {string} name - Имя паза
+     * @return Cut
+     */
+    AddCut: function (name) {}
 };
 
 /**
- * Класс вектор
- *
- * @param x
- * @param y
- * @param z
- * @constructor
+ * @type {{}}
  */
-function NewVector (x, y, z) {
-    return {x: x, y: y, z: z};
-}
+var Cut = {
+    Name: "", // Имя паза.
+    Sign: "", // Обозначение паза.
+    Trajectory: {}, // Траектория паза.
+    Contour: {}, // Профиль паза.
+};
 
 /**
- * Класс точка
+ * Тип вектора - точки в трехмерном пространстве
  *
- * @param x
- * @param y
- * @returns {{x: *, y: *}}
- * @constructor
+ * @typedef Vector
+ * @property {number} x     Координата X
+ * @property {number} y     Координата Y
+ * @property {number} z     Координата Z
  */
-function NewPoint (x, y) {
-    return {x: x, y: y};
-}
+var Vector = {x: 0, y: 0, z: 0};
 
+/**
+ * Создание нового вектора
+ *
+ * @param {number} x     Координата X
+ * @param {number} y     Координата Y
+ * @param {number} z     Координата Z
+ * @returns {Vector}
+ */
+function NewVector (x, y, z) {};
+
+/**
+ * Точка в двухмерном пространстве
+ *
+ * @typedef {} Point
+ * @property {number} x     Координата X
+ * @property {number} y     Координата Y
+ */
+
+/**
+ * Создание новой точки
+ *
+ * @param {number} x     Координата X
+ * @param {number} y     Координата Y
+ * @returns {Point}
+ */
+function NewPoint (x, y) {}
+
+/**
+ * @type {number}
+ */
 var ftoNone = 0;
+
+/**
+ * @type {number}
+ */
 var ftoHorizontal = 1;
+
+/**
+ * @type {number}
+ */
 var ftoVertical = 2;
+
+/**
+ * Создает новую кнопку на панеле
+ *
+ * @param name
+ * @construct Button
+ */
+function NewButtonInput (name) {}

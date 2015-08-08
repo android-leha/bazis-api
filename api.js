@@ -186,12 +186,12 @@ var ButtMaterial;
 /**
  * Создать горизонтальную панель
  *
- * @constructs Panel
- * {number} @param x1
- * {number} @param z1
- * {number} @param x2
- * {number} @param z2
- * {number} @param y
+ * @param {number} x1
+ * @param {number} z1
+ * @param {number} x2
+ * @param {number} z2
+ * @param {number} y
+ * @return {Panel}
  */
 var AddHorizPanel = function (x1, z1, x2, z2, y) {};
 
@@ -238,8 +238,10 @@ var Block = {};
  * @constructs Block
  */
 var BeginParametricBlock = function (name) {};
-
 var EndParametricBlock = function () {};
+
+var BeginBlock = function (name) {};
+var EndBlock = function () {};
 
 var DeleteNewObjects = function () {};
 var DeleteObject = function (object) {};
@@ -247,10 +249,20 @@ var DeleteObject = function (object) {};
 var SetCamera = function () {};
 
 /**
- *
- * @type {{AddButt: Function}}
+ * @typedef Panel
+ * @property {string} Name
+ * @property {number} TextureOrientation
+ * @property {number} Thickness
+ * @property {Vector} Position
+ * @property {Vector} GabMin
+ * @property {Vector} GabMax
+ * @property {Vector} GMin
+ * @property {Vector} GMax
+ * @property {Vector} GSize
  */
 var Panel = {
+    Name: "",
+    TextureOrientation: 0,
     AddButt: function (material, elem) {},
     Thickness: 0,
     Position: {},
